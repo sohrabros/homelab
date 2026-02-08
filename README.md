@@ -45,7 +45,7 @@ graph TB
     subgraph SERVICES["Key Services"]
         UNIFI["UniFi Controller"]
         MON["Prometheus + Grafana"]
-        CONDUIT["Psiphon Conduit<br/>🇮🇷 Internet Freedom"]
+        CONDUIT["Psiphon Conduit<br/>Internet Freedom"]
     end
 
     ISP -->|"WAN"| FW
@@ -91,7 +91,7 @@ Seven VLANs with a simple naming convention — the VLAN ID matches the third oc
 | Reolink RLC-510A (×3) | PoE Surveillance Cameras | 5MP, PoE, RTSP for Frigate integration |
 | PoE Doorbell Camera | Front Door | PoE-powered, Frigate integration |
 
-## Psiphon Conduit — Internet Freedom 🇮🇷
+## Psiphon Conduit — Internet Freedom
 
 A key part of this homelab runs **[Psiphon Conduit](https://conduit.psiphon.ca/)** nodes — volunteer proxies that help people in censored countries (primarily Iran) access the open internet. The proxy fleet runs across homelab infrastructure and Hetzner VPS instances, serving hundreds of concurrent users and transferring terabytes of data.
 

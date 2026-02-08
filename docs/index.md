@@ -10,49 +10,49 @@ A self-hosted homelab inspired by [Louis Rossmann's FUTO guide](https://wiki.fut
 
     Router, firewall, DNS, VPN, and IDS/IPS on a ZimaBoard 2
 
-    [:octicons-arrow-right-24: Setup Guide](setup/opnsense.md)
+    [→ Setup Guide](setup/opnsense.md)
 
 -   **🖥️ Proxmox Cluster**
 
     Two-node virtualisation cluster running all services as LXC containers
 
-    [:octicons-arrow-right-24: Setup Guide](setup/proxmox.md)
+    [→ Setup Guide](setup/proxmox.md)
 
 -   **💾 Pi 5 NAS**
 
     RAID 5 storage on a Raspberry Pi with Radxa SATA HAT
 
-    [:octicons-arrow-right-24: Setup Guide](setup/nas.md)
+    [→ Setup Guide](setup/nas.md)
 
 -   **📡 Switching & Wireless**
 
     UniFi managed switches and NanoHD access points with VLAN trunking
 
-    [:octicons-arrow-right-24: Setup Guide](setup/switching-wireless.md)
+    [→ Setup Guide](setup/switching-wireless.md)
 
 -   **📊 Monitoring**
 
     Prometheus, Grafana, and Uptime Kuma for full infrastructure visibility
 
-    [:octicons-arrow-right-24: Monitoring Stack](setup/monitoring.md)
+    [→ Monitoring Stack](setup/monitoring.md)
 
--   **🇮🇷 Internet Freedom**
+-   **Internet Freedom**
 
     Psiphon Conduit proxy helping people in censored regions
 
-    [:octicons-arrow-right-24: Learn More](humanitarian/psiphon-conduit.md)
+    [→ Learn More](humanitarian/psiphon-conduit.md)
 
 -   **📸 Camera System**
 
     Frigate NVR with Reolink PoE cameras — local recording, no cloud
 
-    [:octicons-arrow-right-24: Setup Guide](setup/frigate.md)
+    [→ Setup Guide](setup/frigate.md)
 
 -   **💡 Lessons Learned**
 
     Real mistakes, real troubleshooting, real fixes
 
-    [:octicons-arrow-right-24: Read Them](lessons-learned/index.md)
+    [→ Read Them](lessons-learned/index.md)
 
 </div>
 
@@ -60,7 +60,7 @@ A self-hosted homelab inspired by [Louis Rossmann's FUTO guide](https://wiki.fut
 
 Seven VLANs segment the network by trust level. The VLAN ID matches the third octet of each subnet — VLAN 10 is `10.0.10.0/24`, VLAN 30 is `10.0.30.0/24`, and so on.
 
-[:octicons-arrow-right-24: Full Architecture Documentation](architecture/overview.md)
+[→ Full Architecture Documentation](architecture/overview.md)
 
 ## Guiding Principles
 
