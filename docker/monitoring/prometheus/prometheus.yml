@@ -1,0 +1,29 @@
+# Prometheus Configuration
+#
+# Replace <*-ip> placeholders with your actual Management VLAN addresses.
+# These are intentionally not committed with real IPs.
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets:
+        - '<nas-ip>:9100'
+        - '<opnsense-ip>:9100'
+
+  - job_name: 'proxmox'
+    static_configs:
+      - targets:
+        - '<pve1-ip>:9221'
+        - '<pve2-ip>:9221'
+
+  - job_name: 'conduit'
+    static_configs:
+      - targets: ['<conduit-ip>:9090']

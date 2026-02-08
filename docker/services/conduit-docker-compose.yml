@@ -1,0 +1,16 @@
+# Psiphon Conduit — docker-compose.yml
+#
+# Deploy in a Docker Host LXC on an ISOLATED VLAN.
+# Firewall rules MUST block access to all internal networks.
+# See docs/humanitarian/psiphon-conduit.md for full instructions.
+
+services:
+  conduit:
+    image: ghcr.io/psiphon-inc/conduit/cli:latest
+    container_name: conduit
+    restart: unless-stopped
+    volumes:
+      - ./data:/home/conduit/data
+    ports:
+      - "9090:9090"  # Prometheus metrics
+    command: start -v --max-clients 500 --bandwidth -1

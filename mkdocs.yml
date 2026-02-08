@@ -1,0 +1,91 @@
+site_name: GoozLab
+site_description: Privacy-first self-hosted homelab inspired by Louis Rossmann's FUTO guide
+site_url: https://sohrabros.github.io/homelab/
+repo_name: sohrabros/homelab
+repo_url: https://github.com/sohrabros/homelab
+
+theme:
+  name: material
+  palette:
+    - scheme: slate
+      primary: indigo
+      accent: cyan
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    - scheme: default
+      primary: indigo
+      accent: cyan
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - content.code.copy
+    - search.highlight
+  icon:
+    repo: fontawesome/brands/github
+
+nav:
+  - Home: index.md
+  - Architecture:
+    - Overview: architecture/overview.md
+    - Network Design: architecture/network-design.md
+    - VLAN Segmentation: architecture/vlan-segmentation.md
+  - Setup Guides:
+    - OPNsense Firewall: setup/opnsense.md
+    - Proxmox Cluster: setup/proxmox.md
+    - Pi 5 NAS: setup/nas.md
+    - Switching & Wireless: setup/switching-wireless.md
+    - Docker Services: setup/docker-services.md
+    - Monitoring: setup/monitoring.md
+    - Frigate NVR: setup/frigate.md
+  - Security:
+    - Hardening: security/hardening.md
+    - Firewall Rules: security/firewall-rules.md
+  - Services:
+    - Catalog: services/catalog.md
+  - Humanitarian:
+    - Psiphon Conduit: humanitarian/psiphon-conduit.md
+    - Run a Node: humanitarian/run-a-node.md
+  - Lessons Learned:
+    - Overview: lessons-learned/index.md
+    - Pi NAS Power Supply: lessons-learned/pi-nas-power.md
+    - PoE Power Budget: lessons-learned/poe-power-budget.md
+    - DHCP Collision: lessons-learned/dhcp-collision.md
+    - VLAN Migration: lessons-learned/vlan-migration.md
+    - Parallel Network: lessons-learned/parallel-network.md
+    - UniFi Adoption: lessons-learned/unifi-adoption.md
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/sohrabros
+    - icon: fontawesome/brands/linkedin
+      link: https://linkedin.com/in/srostampour
