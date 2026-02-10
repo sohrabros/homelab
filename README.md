@@ -146,9 +146,9 @@ Full documentation is hosted at **[sohrabros.github.io/homelab](https://sohrabro
 | WireGuard VPN | ✅ Complete |
 | Suricata IDS + CrowdSec | ✅ Complete |
 | Psiphon Conduit fleet | ✅ Operational |
-| Camera system (Frigate NVR) | 🔶 Cabling in progress |
+| Camera system (Frigate NVR, 4 cameras) | ✅ Complete |
+| Home Assistant (solar + cameras + dashboard) | ✅ Complete |
 | Self-hosted services (Jellyfin, Immich, etc.) | 📋 Planned |
-| Home Assistant integration | 📋 Planned |
 
 ## License
 
