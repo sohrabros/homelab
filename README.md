@@ -28,9 +28,10 @@ graph TB
         FLEX["USW-Flex-2.5G-5"]
     end
 
-    subgraph COMPUTE["Proxmox Cluster"]
-        PVE1["Proxmox Node 1<br/>HP EliteDesk 800 G3"]
-        PVE2["Proxmox Node 2<br/>HP EliteDesk 800 G3"]
+    subgraph COMPUTE["Proxmox Cluster — 3 Nodes"]
+        PVE1["pve1<br/>HP EliteDesk G3<br/>i7-6700T · 32GB"]
+        PVE2["pve2<br/>HP EliteDesk G3<br/>i7-6700T · 32GB"]
+        PVE3["pve3<br/>HP EliteDesk G3<br/>i7-7700 · 32GB"]
     end
 
     subgraph STORAGE["Storage"]
@@ -44,8 +45,11 @@ graph TB
 
     subgraph SERVICES["Key Services"]
         UNIFI["UniFi Controller"]
-        MON["Prometheus + Grafana"]
+        MON["Prometheus + Grafana<br/>+ InfluxDB + Uptime Kuma"]
         CONDUIT["Psiphon Conduit<br/>Internet Freedom"]
+        FRIGATE["Frigate NVR<br/>4 Cameras · AI Detection"]
+        HA["Home Assistant<br/>Solar · Cameras · MQTT"]
+        CADDY["Caddy Reverse Proxy<br/>Auto-HTTPS · 10 Services"]
     end
 
     ISP -->|"WAN"| FW
@@ -54,17 +58,21 @@ graph TB
     SW16 --> FLEX
     SW16 --> PVE1
     SW16 --> PVE2
+    SW16 --> PVE3
     SW16 --> NAS
     SW16 -->|"PoE"| AP1
     SW16 -->|"PoE"| AP2
     PVE1 -.-> UNIFI
     PVE1 -.-> MON
+    PVE1 -.-> FRIGATE
+    PVE2 -.-> HA
     PVE2 -.-> CONDUIT
+    PVE3 -.-> CADDY
 ```
 
 ## Network Segmentation
 
-Seven VLANs with a simple naming convention — the VLAN ID matches the third octet of the subnet (VLAN 10 → `10.0.10.0/24`). Makes troubleshooting intuitive: if you see `10.0.30.x` in a log, you instantly know it's IoT.
+Six VLANs with a simple naming convention — the VLAN ID matches the third octet of the subnet (VLAN 10 → `10.0.10.0/24`). Makes troubleshooting intuitive: if you see `10.0.30.x` in a log, you instantly know it's IoT.
 
 | VLAN | Name | Purpose |
 |------|------|---------|
@@ -82,7 +90,8 @@ Seven VLANs with a simple naming convention — the VLAN ID matches the third oc
 | Device | Role | Key Specs |
 |--------|------|-----------|
 | ZimaBoard 2 (1664) | OPNsense Firewall/Router | Intel N150, 16GB LPDDR5x, Dual 2.5GbE, 64GB eMMC |
-| HP EliteDesk 800 G3 (×2) | Proxmox Cluster Nodes | i7-6700 @ 3.4GHz (4C/8T), 32GB DDR4 each |
+| HP EliteDesk 800 G3 (×2) | Proxmox Nodes 1 & 2 | i7-6700T @ 2.8GHz (4C/8T, 35W), 32GB DDR4 each |
+| HP EliteDesk 800 G3 (×1) | Proxmox Node 3 | i7-7700 @ 3.6GHz (4C/8T, 65W), 32GB DDR4 |
 | Raspberry Pi 5 (4GB) | NAS — OpenMediaVault 7 | Radxa Penta SATA HAT, 4× Kingston 894GB SSD, RAID 5 |
 | USW-Lite-16-PoE | Core Switch | 16-port Gigabit, PoE+ (45W budget), 802.1Q VLANs |
 | USW-Lite-8-PoE | Secondary Switch | 8-port Gigabit, PoE+ (52W budget) |
@@ -93,7 +102,7 @@ Seven VLANs with a simple naming convention — the VLAN ID matches the third oc
 
 ## Psiphon Conduit — Internet Freedom
 
-A key part of this homelab runs **[Psiphon Conduit](https://conduit.psiphon.ca/)** nodes — volunteer proxies that help people in censored countries (primarily Iran) access the open internet. The proxy fleet runs across homelab infrastructure and Hetzner VPS instances, serving hundreds of concurrent users and transferring terabytes of data.
+A key part of this homelab runs **[Psiphon Conduit](https://conduit.psiphon.ca/)** nodes — volunteer proxies that help people in censored countries (primarily Iran) access the open internet. The proxy fleet runs across homelab infrastructure and 5 Hetzner Cloud VPS instances, serving ~1,000 concurrent users.
 
 The Conduit traffic is completely isolated on its own VLAN with firewall rules that block all access to internal networks. See the [full write-up](docs/humanitarian/psiphon-conduit.md).
 
@@ -128,8 +137,8 @@ This project follows the philosophy from [Louis Rossmann's FUTO guide](https://w
 Full documentation is hosted at **[sohrabros.github.io/homelab](https://sohrabros.github.io/homelab/)** and covers:
 
 - [Architecture & Network Design](docs/architecture/overview.md)
-- [Setup Guides](docs/setup/opnsense.md) (OPNsense, Proxmox, NAS, Switching, Monitoring)
-- [Security Hardening](docs/security/hardening.md) (Suricata IDS/IPS, CrowdSec, Firewall Rules)
+- [Setup Guides](docs/setup/opnsense.md) (OPNsense, Proxmox, NAS, Switching, Monitoring, Caddy, Frigate, Home Assistant)
+- [Security Hardening](docs/security/hardening.md) (Suricata IPS, Firewall Rules, DNSBL)
 - [Humanitarian Tech](docs/humanitarian/psiphon-conduit.md) (Psiphon Conduit)
 - [Lessons Learned](docs/lessons-learned/index.md) (Real mistakes and fixes)
 
@@ -138,17 +147,26 @@ Full documentation is hosted at **[sohrabros.github.io/homelab](https://sohrabro
 | Phase | Status |
 |-------|--------|
 | OPNsense firewall + PPPoE | ✅ Complete |
-| VLAN segmentation (7 VLANs) | ✅ Complete |
-| Proxmox cluster (2 nodes, 32GB each) | ✅ Complete |
+| VLAN segmentation (6 VLANs) | ✅ Complete |
+| Proxmox cluster (3 nodes, 32GB each) | ✅ Complete |
 | Pi 5 NAS (RAID 5, NFS/SMB) | ✅ Complete |
 | UniFi switching + wireless | ✅ Complete |
-| Monitoring (Prometheus/Grafana/Uptime Kuma) | ✅ Complete |
-| WireGuard VPN | ✅ Complete |
-| Suricata IDS + CrowdSec | ✅ Complete |
-| Psiphon Conduit fleet | ✅ Operational |
+| Monitoring (Prometheus/Grafana/InfluxDB/Uptime Kuma) | ✅ Complete |
+| Homepage dashboard | ✅ Complete |
+| WireGuard VPN (multi-peer) | ✅ Complete |
+| Suricata IPS (Hyperscan, LAN/igc0) | ✅ Complete — tuning in Alert mode |
+| DNS hardening (Quad9 DoT, DNSSEC, DNSBL) | ✅ Complete |
+| Caddy reverse proxy (10 services, auto-HTTPS) | ✅ Complete |
 | Camera system (Frigate NVR, 4 cameras) | ✅ Complete |
-| Home Assistant (solar + cameras + dashboard) | ✅ Complete |
-| Self-hosted services (Jellyfin, Immich, etc.) | 📋 Planned |
+| Home Assistant (Frigate, Solar, MQTT) | ✅ Complete |
+| Frigate mobile notifications (HA blueprint) | ✅ Complete |
+| Psiphon Conduit fleet (6 nodes) | ✅ Operational |
+| Ansible fleet management | 📋 Planned |
+| Tor Snowflake + Watchtower | 📋 Planned |
+| Wazuh SOC | 📋 Planned |
+| Ollama + Open WebUI (local AI) | 📋 Planned |
+| n8n workflow automation | 📋 Planned |
+| Immich (photo management) | 📋 Planned |
 
 ## License
 
