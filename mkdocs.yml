@@ -44,6 +44,7 @@ nav:
     - Monitoring: setup/monitoring.md
     - Frigate NVR: setup/frigate.md
     - Home Assistant: setup/home-assistant.md
+    - Caddy Reverse Proxy: setup/caddy.md
   - Security:
     - Hardening: security/hardening.md
     - Firewall Rules: security/firewall-rules.md
