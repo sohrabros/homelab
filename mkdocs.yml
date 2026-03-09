@@ -3,7 +3,6 @@ site_description: Privacy-first self-hosted homelab inspired by Louis Rossmann's
 site_url: https://sohrabros.github.io/homelab/
 repo_name: sohrabros/homelab
 repo_url: https://github.com/sohrabros/homelab
-
 theme:
   name: material
   palette:
@@ -28,7 +27,6 @@ theme:
     - search.highlight
   icon:
     repo: fontawesome/brands/github
-
 nav:
   - Home: index.md
   - Architecture:
@@ -61,7 +59,6 @@ nav:
     - VLAN Migration: lessons-learned/vlan-migration.md
     - Parallel Network: lessons-learned/parallel-network.md
     - UniFi Adoption: lessons-learned/unifi-adoption.md
-
 markdown_extensions:
   - admonition
   - pymdownx.details
@@ -77,14 +74,15 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - md_in_html
   - tables
   - toc:
       permalink: true
-
 plugins:
   - search
-
 extra:
   social:
     - icon: fontawesome/brands/github
