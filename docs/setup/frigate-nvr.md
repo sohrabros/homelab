@@ -52,7 +52,7 @@ The Frigate container runs as a privileged LXC to allow GPU device passthrough a
 | IP | `10.0.10.104/24` |
 | Gateway | `10.0.10.1` |
 | RAM | 4096 MB |
-| CPU | 2 cores |
+| CPU | 4 cores |
 | Disk | 16 GB (local-lvm) |
 | Type | Privileged (unprivileged=0) |
 | Features | nesting=1 |
@@ -126,7 +126,7 @@ services:
 
 ## Frigate Configuration
 
-The full `config/config.yml` with all four cameras, OpenVINO detection, and dual-stream recording:
+The full `config/config.yml` with all four cameras, OpenVINO detection, VAAPI hardware decode, and dual-stream recording with tiered retention:
 
 ```yaml
 mqtt:
@@ -135,6 +135,9 @@ mqtt:
   port: 1883
   user: mqtt
   password: "<your-mqtt-password>"
+
+ffmpeg:
+  hwaccel_args: preset-vaapi
 
 go2rtc:
   streams:
@@ -177,19 +180,25 @@ cameras:
       inputs:
         - path: rtsp://127.0.0.1:8554/doorbell
           roles:
-            - detect
+            - record
         - path: rtsp://127.0.0.1:8554/doorbell_sub
           roles:
-            - record
+            - detect
     detect:
-      width: 2560
-      height: 1920
+      width: 640
+      height: 480
       fps: 5
     record:
       enabled: true
       retain:
-        days: 14
+        days: 3
         mode: motion
+      alerts:
+        retain:
+          days: 14
+      detections:
+        retain:
+          days: 14
     snapshots:
       enabled: true
       retain:
@@ -206,19 +215,25 @@ cameras:
       inputs:
         - path: rtsp://127.0.0.1:8554/front_camera
           roles:
-            - detect
+            - record
         - path: rtsp://127.0.0.1:8554/front_camera_sub
           roles:
-            - record
+            - detect
     detect:
-      width: 2560
-      height: 1920
+      width: 640
+      height: 480
       fps: 5
     record:
       enabled: true
       retain:
-        days: 14
+        days: 3
         mode: motion
+      alerts:
+        retain:
+          days: 14
+      detections:
+        retain:
+          days: 14
     snapshots:
       enabled: true
       retain:
@@ -235,19 +250,25 @@ cameras:
       inputs:
         - path: rtsp://127.0.0.1:8554/side_camera
           roles:
-            - detect
+            - record
         - path: rtsp://127.0.0.1:8554/side_camera_sub
           roles:
-            - record
+            - detect
     detect:
-      width: 2560
-      height: 1920
+      width: 640
+      height: 480
       fps: 5
     record:
       enabled: true
       retain:
-        days: 14
+        days: 3
         mode: motion
+      alerts:
+        retain:
+          days: 14
+      detections:
+        retain:
+          days: 14
     snapshots:
       enabled: true
       retain:
@@ -264,19 +285,25 @@ cameras:
       inputs:
         - path: rtsp://127.0.0.1:8554/rear_camera
           roles:
-            - detect
+            - record
         - path: rtsp://127.0.0.1:8554/rear_camera_sub
           roles:
-            - record
+            - detect
     detect:
-      width: 2560
-      height: 1920
+      width: 640
+      height: 480
       fps: 5
     record:
       enabled: true
       retain:
-        days: 14
+        days: 3
         mode: motion
+      alerts:
+        retain:
+          days: 14
+      detections:
+        retain:
+          days: 14
     snapshots:
       enabled: true
       retain:
@@ -291,10 +318,10 @@ cameras:
 version: 0.16-0
 semantic_search:
   enabled: true
-  model_size: small
+  model_size: large
 face_recognition:
   enabled: true
-  model_size: small
+  model_size: large
 lpr:
   enabled: true
 classification:
@@ -306,17 +333,31 @@ classification:
 
 Each camera uses a dual-stream approach to balance detection quality with storage efficiency:
 
-- **Main stream** (`h264Preview_01_main` at 2560×1920) → used for AI detection, giving maximum resolution for identifying objects
-- **Sub stream** (`h264Preview_01_sub` at lower resolution) → used for continuous recording, reducing storage consumption by 60–70%
+- **Main stream** (`h264Preview_01_main` at 2560×1920) → used for **recording**, saving full 5MP quality to the NAS
+- **Sub stream** (`h264Preview_01_sub` at 640×480) → used for **AI detection**, already close to the 300×300 model input size so minimal CPU is needed for downscaling
 
 All streams pass through go2rtc for restreaming, which provides stable WebRTC playback in the UI and prevents multiple direct connections to the cameras.
+
+**VAAPI hardware decode** is enabled globally via `ffmpeg: hwaccel_args: preset-vaapi`, offloading video decoding to the Intel HD 530 iGPU for all cameras including the doorbell.
+
+### Tiered Retention (Frigate 0.16 schema)
+
+Frigate 0.16 uses `alerts` and `detections` keys (not the old `events` key) for tiered retention:
+
+| Retention Type | Duration | What It Keeps |
+|---------------|----------|---------------|
+| Motion | 3 days | Any segment with motion detected |
+| Alerts | 14 days | Segments where tracked objects triggered alerts |
+| Detections | 14 days | Segments where AI detected objects of interest |
+
+This tiered approach dropped NAS usage from 99% to ~30% steady state — well within the 2.58 TiB usable capacity.
 
 ### AI Features
 
 Frigate 0.16 includes several AI capabilities enabled in this deployment:
 
-- **Semantic search** — natural language search across recorded events
-- **Face recognition** — identifies known faces from snapshots
+- **Semantic search** — natural language search across recorded events (large model, GPU-accelerated)
+- **Face recognition** — identifies known faces from snapshots (large model, GPU-accelerated)
 - **LPR (License Plate Recognition)** — reads number plates from detected vehicles
 - **Object tracking** — person, car, dog, and cat detection on all cameras
 
@@ -368,24 +409,27 @@ To add a camera to the system:
 
 ## Storage Considerations
 
-At full 5MP main stream recording, each camera generates approximately 1.78 GiB/hour. With 4 cameras and `mode: motion` retention, real-world usage is typically 30–50% of theoretical maximum.
+With the corrected stream architecture (main stream for recording, sub stream for detection), storage usage is significantly reduced compared to recording the full 5MP main stream:
 
-**Estimated storage usage with dual-stream recording:**
+**Estimated storage usage with tiered retention:**
 
-| Scenario | Daily (est.) | 14-day retention |
-|----------|-------------|-----------------|
-| 4 cameras, sub-stream, motion-only | ~25–40 GiB | ~350–560 GiB |
-| 4 cameras, main stream, motion-only | ~50–85 GiB | ~700–1200 GiB |
+| Scenario | Daily (est.) | Steady State |
+|----------|-------------|--------------|
+| 4 cameras, main stream record, 3d motion + 14d alerts | ~25–40 GiB | ~500–700 GiB |
 
-The NAS has 2.58 TiB usable, providing comfortable headroom with the sub-stream recording approach.
+The NAS has 2.58 TiB usable, providing over a terabyte of headroom.
 
 ## Lessons Learned
 
-**URL-encode special characters in passwords.** The `#` character is interpreted as a URL fragment delimiter in RTSP URLs, silently truncating the password. Use `%23` instead of `#`. This caused extended debugging when the doorbell initially failed to connect.
+**Stream roles matter — sub for detect, main for record.** The detection model input is 300×300 pixels. Sending 5MP frames to the detector wastes massive CPU on downscaling. The sub-stream at 640×480 is already close to model input size. Meanwhile, the main stream records at full 5MP quality to the NAS.
+
+**URL-encode special characters in passwords.** The `#` character is interpreted as a URL fragment delimiter in RTSP URLs, silently truncating the password. Use `%23` instead of `#`.
 
 **SHM size must scale with camera count.** The default 256MB is adequate for 1–2 cameras but causes crashes with 4. Frigate logs the recommended minimum — watch for the warning on startup.
 
-**VAAPI has hardware decode slot limits.** The Intel HD 530 can handle approximately 6–7 simultaneous hardware decode sessions. With 8 streams (4 main + 4 sub), some streams may need to fall back to software decode. If you see "Failed to sync surface" errors, disable `hwaccel_args` on one or two cameras to reduce GPU pressure.
+**VAAPI globally with preset-vaapi.** Enable hardware decode for all cameras at the global `ffmpeg` level rather than per-camera. This ensures the doorbell and all other cameras use iGPU decode.
+
+**Tiered retention saves storage.** The jump from flat 14-day retention to 3-day motion / 14-day alerts dropped NAS usage from 99% to ~30%.
 
 **VLAN double-tagging.** If the Proxmox host bridge already carries the management VLAN as untagged traffic, do not add a VLAN tag to the LXC network interface. Double-tagging prevents the container from getting an IP address.
 

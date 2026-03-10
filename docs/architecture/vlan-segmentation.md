@@ -6,7 +6,7 @@ A flat home network puts every device on the same broadcast domain. Your work la
 
 VLANs solve this by creating separate network segments that can only communicate through firewall rules. A compromised IoT camera can't scan your trusted devices because the firewall blocks inter-VLAN traffic by default.
 
-## The Seven VLANs
+## The Six VLANs
 
 ```mermaid
 graph LR

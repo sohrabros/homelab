@@ -7,8 +7,9 @@
 | Prometheus | Metrics collection and storage |
 | Grafana | Dashboards and visualisation |
 | Uptime Kuma | Service availability monitoring |
+| Homepage | Service dashboard at dash.goozlab.net (port 3002) |
 
-All three run in a single Docker Host LXC container on the Management VLAN.
+All run in a single Docker Host LXC container on the Management VLAN.
 
 ## Architecture
 
@@ -18,6 +19,7 @@ graph LR
         OPN["OPNsense<br/>node_exporter"]
         PVE1["pve1<br/>pve_exporter"]
         PVE2["pve2<br/>pve_exporter"]
+        PVE3["pve3<br/>node_exporter"]
         NAS["Pi 5 NAS<br/>node_exporter"]
         CONDUIT["Conduit<br/>Prometheus metrics"]
     end
@@ -26,11 +28,13 @@ graph LR
         PROM["Prometheus"]
         GRAF["Grafana"]
         UPTIME["Uptime Kuma"]
+        HOME["Homepage Dashboard"]
     end
 
     OPN -->|":9100"| PROM
     PVE1 -->|":9221"| PROM
     PVE2 -->|":9221"| PROM
+    PVE3 -->|":9100"| PROM
     NAS -->|":9100"| PROM
     CONDUIT -->|":9090"| PROM
     PROM --> GRAF
@@ -71,6 +75,15 @@ services:
     ports:
       - "3001:3001"
 
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    restart: unless-stopped
+    volumes:
+      - ./homepage/config:/app/config
+    ports:
+      - "3002:3000"
+
 volumes:
   prometheus_data:
   grafana_data:
@@ -95,6 +108,7 @@ scrape_configs:
       - targets:
         - '<nas-ip>:9100'
         - '<opnsense-ip>:9100'
+        - '<pve3-ip>:9100'
 
   - job_name: 'proxmox'
     static_configs:
@@ -122,11 +136,17 @@ Import community dashboards for quick setup:
 Monitors service availability with HTTP, TCP, and ping checks. Configure alerts for:
 
 - OPNsense web UI
-- Proxmox web UI (both nodes)
+- Proxmox web UI (all three nodes)
 - NAS SMB/NFS
 - UniFi controller
 - Grafana
+- Frigate NVR
+- Home Assistant
 - Any deployed services
+
+## Homepage Dashboard
+
+Homepage provides a quick-glance service dashboard accessible at `dash.goozlab.net`. It's configured via YAML files in the `homepage/config` directory with service groups for Infrastructure, Storage & Media, Security & Cameras, and Monitoring.
 
 ## What To Monitor
 

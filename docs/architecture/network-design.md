@@ -18,9 +18,10 @@ graph TB
         FLEX["USW-Flex-2.5G-5<br/>USB-C Powered"]
     end
 
-    subgraph COMPUTE["Compute"]
-        PVE1["pve1 — HP EliteDesk 800 G3<br/>i7-6700 · 32GB"]
-        PVE2["pve2 — HP EliteDesk 800 G3<br/>i7-6700 · 32GB"]
+    subgraph COMPUTE["Compute — 3-Node Proxmox Cluster"]
+        PVE1["pve1 — HP EliteDesk 800 G3<br/>i7-6700T · 32GB"]
+        PVE2["pve2 — HP EliteDesk 800 G3<br/>i7-6700T · 32GB"]
+        PVE3["pve3 — HP EliteDesk 800 G3<br/>i7-7700 · 32GB"]
     end
 
     subgraph STORAGE["Storage"]
@@ -32,7 +33,7 @@ graph TB
         AP2["NanoHD 2<br/>Upstairs<br/>PoE Powered"]
     end
 
-    subgraph CAMERAS["Cameras — Planned"]
+    subgraph CAMERAS["Cameras"]
         CAM1["Reolink RLC-510A ×3"]
         BELL["PoE Doorbell"]
     end
@@ -43,6 +44,7 @@ graph TB
     SW16 --> FLEX
     SW16 --> PVE1
     SW16 --> PVE2
+    SW16 --> PVE3
     SW16 --> NAS
     SW16 -->|"PoE+"| AP1
     SW16 -->|"PoE+"| AP2
@@ -72,7 +74,7 @@ The VLAN ID matches the third octet of each subnet. This was the single best des
 - **Upstream:** DNS-over-TLS to Quad9 (encrypted, no-logging)
 - **DNSSEC:** Enabled — validates DNS responses cryptographically
 - **Local zone:** `goozlab.net` with host overrides for all internal services
-- **Blocklists:** OISD and Hagezi lists for network-wide ad/tracker blocking
+- **Blocklists:** AdGuard, Hagezi, OISD, and Steven Black lists for network-wide ad/tracker blocking
 - **DNS redirect rules:** Force all clients to use the local resolver (prevents devices using hardcoded DNS like `8.8.8.8`)
 
 ## Switching Infrastructure
@@ -91,7 +93,7 @@ The backbone of the network. All infrastructure connects here:
 
 ### USW-Lite-8-PoE — Camera/Endpoint Switch
 
-Dedicated to PoE cameras and endpoints that don't need trunk ports. 52W PoE budget is better suited for camera loads.
+Dedicated to PoE cameras and endpoints that don't need trunk ports. 52W PoE budget is better suited for camera loads. All four cameras (3× RLC-510A + PoE doorbell) are connected here on IoT VLAN ports.
 
 ### USW-Flex-2.5G-5
 
@@ -120,3 +122,7 @@ All SSIDs use WPA2. The AP trunk ports carry all three VLANs tagged.
 **WireGuard VPN** on OPNsense with Cloudflare DDNS for the public endpoint. No services are exposed to the internet — everything is accessed through the tunnel.
 
 The VPN lands on VLAN 60 with firewall rules allowing access to the Management VLAN. This means remote access has the same visibility as being physically on the management network.
+
+## Reverse Proxy
+
+**Caddy** runs as an OPNsense plugin, providing automatic HTTPS via Let's Encrypt with Cloudflare DNS-01 challenge. Ten services are accessible at `*.goozlab.net` — each with its own full domain (not wildcard subdomains, due to a known Caddyfile generation bug in the OPNsense plugin).

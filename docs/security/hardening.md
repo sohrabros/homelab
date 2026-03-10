@@ -29,10 +29,12 @@ OPNsense's built-in Suricata provides network intrusion detection and prevention
 
 **Configuration:**
 
-- **Mode:** Started in IDS (detection only) to build baseline, then switched to IPS (blocking)
+- **Mode:** Currently running in **IDS/Alert mode** to build baseline and tune false positives before switching to IPS/Drop mode
 - **Rulesets:** ET Open, Abuse.ch, and OPNsense-curated rules
-- **Interface:** Monitors the WAN interface for inbound threats
+- **Interface:** Monitors **igc0** — the LAN physical parent interface of all VLANs. This is the only interface that supports netmap for inline IPS mode, and it sees all inter-VLAN and outbound traffic.
 - **Pattern matcher:** Hyperscan (fastest option for x86)
+
+**Why igc0, not WAN?** WAN alerts are mostly noise (GTP traffic from external scanners hitting your public IP). The meaningful security monitoring happens on the LAN side where you can see traffic between VLANs and detect compromised internal devices trying to move laterally.
 
 **Tip:** Run in IDS mode for at least a week before switching to IPS. Review alerts in the Suricata log to identify false positives and create suppression rules before enabling blocking. Otherwise you'll block legitimate traffic and spend hours troubleshooting "why can't I reach X."
 
@@ -50,7 +52,7 @@ CrowdSec is a collaborative threat intelligence tool. It analyses OPNsense logs,
 
 - **DNS-over-TLS:** All upstream queries encrypted via Quad9
 - **DNSSEC:** Validates DNS responses — prevents poisoning and spoofing
-- **Blocklists:** OISD and Hagezi lists block known ad/tracking/malware domains
+- **Blocklists:** AdGuard, Hagezi, OISD, and Steven Black lists block known ad/tracking/malware domains
 - **DNS redirect:** NAT rule forces all port 53 traffic to Unbound, preventing devices from bypassing local DNS
 
 ## Access Security
