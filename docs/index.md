@@ -1,7 +1,7 @@
 # GoozLab — Privacy-First Home Infrastructure
 
 <div align="center">
-<em>Self-hosted homelab built on open-source software and <a href="https://futo.org/">FUTO principles</a>.<br>
+<em>Self-hosted homelab built on open-source software and <a href="https://wiki.futo.org/index.php/Introduction_to_a_Self_Managed_Life:_a_13_hour_%26_28_minute_presentation_by_FUTO_software">FUTO principles</a>.<br>
 Replacing cloud dependencies with local-first infrastructure while contributing to global internet freedom.</em>
 </div>
 
@@ -143,7 +143,7 @@ Internet ──► OPNsense (ZimaBoard 2)
 ## Key Principles
 
 - **FUTO-aligned:** Local control, no cloud dependency, open-source software
-- **Defense in depth:** VLAN isolation, Suricata IPS, DNSBL, WireGuard encryption
+- **Defense in depth:** VLAN isolation, Suricata IPS, CrowdSec, DNSBL, WireGuard encryption
 - **Humanitarian purpose:** Dedicated proxy fleet serving users in censored regions
 - **Documentation-first:** Every build, every mistake, every lesson — documented publicly
 

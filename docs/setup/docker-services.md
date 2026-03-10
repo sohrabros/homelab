@@ -91,12 +91,15 @@ docker compose up -d
 
 ## Current Services
 
-| Service | LXC | Purpose | Docs |
-|---------|-----|---------|------|
-| UniFi Controller | Docker Host on pve1 | Network management | [Switching & Wireless](switching-wireless.md) |
-| Monitoring Stack | Docker Host on pve1 | Prometheus + Grafana + Uptime Kuma | [Monitoring](monitoring.md) |
-| Psiphon Conduit | Docker Host on pve2 | Internet freedom proxy | [Psiphon Conduit](../humanitarian/psiphon-conduit.md) |
-| Frigate NVR | Docker Host on pve2 | Camera recording + AI detection | [Frigate](frigate.md) |
+| Service | Host | Type | Purpose | Docs |
+|---------|------|------|---------|------|
+| UniFi Controller | Docker Host LXC on pve1 | LXC | Network management | [Switching & Wireless](switching-wireless.md) |
+| Monitoring Stack | Docker Host LXC on pve1 | LXC | Prometheus + Grafana + Uptime Kuma + Homepage | [Monitoring](monitoring.md) |
+| Frigate NVR | Docker Host LXC on pve1 | LXC | Camera recording + AI detection (4 cameras) | [Frigate](frigate.md) |
+| Psiphon Conduit | Docker Host LXC on pve2 | LXC | Internet freedom proxy | [Psiphon Conduit](../humanitarian/psiphon-conduit.md) |
+| Home Assistant | VM on pve2 | VM | Smart home — Frigate, solar, MQTT | [Home Assistant](home-assistant.md) |
+
+> **Note:** Home Assistant runs as a HAOS VM (not a Docker Host LXC) because HAOS requires its own kernel and provides a managed add-on ecosystem.
 
 ## Planned Services
 
@@ -104,5 +107,5 @@ docker compose up -d
 |---------|---------|-------|
 | Jellyfin | Media streaming | Google Photos / Netflix replacement |
 | Immich | Photo management | FUTO-sponsored project |
-| Home Assistant | Smart home automation | Reduce cloud dependencies for IoT |
 | Vaultwarden | Password management | Bitwarden-compatible, self-hosted |
+| Syncthing | File sync and phone backup | Google/iCloud replacement |
