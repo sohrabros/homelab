@@ -116,18 +116,8 @@ The most valuable part of this repo. Real mistakes, real troubleshooting, real f
 - **[VLAN Migration Without Downtime](docs/lessons-learned/vlan-migration.md)** — Using a temporary Virtual IP as a bridge during the transition
 - **[Parallel Network Approach](docs/lessons-learned/parallel-network.md)** — Running old and new routers side by side during cutover
 - **[UniFi Adoption Across Subnets](docs/lessons-learned/unifi-adoption.md)** — When the controller and switches can't find each other
-
-→ [Read all lessons learned](docs/lessons-learned/index.md)
-
-## Guiding Principles
-
-This project follows the philosophy from [Louis Rossmann's FUTO guide](https://wiki.futo.org/index.php/Introduction_to_a_Self_Managed_Life:_a_13_hour_%26_28_minute_presentation_by_FUTO_software):
-
-1. **Own Your Data** — Self-host everything possible. No cloud dependency for core services.
-2. **Open Source First** — Every component is open source or has an open-source alternative.
-3. **Privacy by Default** — DNS-over-TLS, encrypted tunnels, no telemetry, no ads in the stack.
-4. **Learn by Doing** — Build it yourself, break it, fix it, document what you learned.
-5. **Give Back** — Use surplus infrastructure to help others (Psiphon Conduit for internet freedom).
+- **[Conduit OOM Kill Loops](docs/lessons-learned/conduit-oom.md)** — When three Hetzner nodes entered an unrecoverable out-of-memory death spiral
+- **[Frigate iGPU Conflict](docs/lessons-learned/frigate-igpu.md)** — When VAAPI decode and OpenVINO detection fight over the same GPU
 
 > *"The best time to start self-hosting was years ago. The second best time is now."*
 > — Louis Rossmann
@@ -138,7 +128,7 @@ Full documentation is hosted at **[sohrabros.github.io/homelab](https://sohrabro
 
 - [Architecture & Network Design](docs/architecture/overview.md)
 - [Setup Guides](docs/setup/opnsense.md) (OPNsense, Proxmox, NAS, Switching, Monitoring, Caddy, Frigate, Home Assistant)
-- [Security Hardening](docs/security/hardening.md) (Suricata IPS, Firewall Rules, DNSBL)
+- [Security Hardening](docs/security/hardening.md) (Suricata IDS/IPS, CrowdSec, Firewall Rules, DNSBL)
 - [Humanitarian Tech](docs/humanitarian/psiphon-conduit.md) (Psiphon Conduit)
 - [Lessons Learned](docs/lessons-learned/index.md) (Real mistakes and fixes)
 
@@ -154,15 +144,19 @@ Full documentation is hosted at **[sohrabros.github.io/homelab](https://sohrabro
 | Monitoring (Prometheus/Grafana/InfluxDB/Uptime Kuma) | ✅ Complete |
 | Homepage dashboard | ✅ Complete |
 | WireGuard VPN (multi-peer) | ✅ Complete |
-| Suricata IPS (Hyperscan, LAN/igc0) | ✅ Complete — tuning in Alert mode |
+| Suricata IDS/IPS (Hyperscan, LAN/igc0) | ✅ Complete — tuning in Alert mode |
+| CrowdSec threat intelligence | ✅ Complete |
 | DNS hardening (Quad9 DoT, DNSSEC, DNSBL) | ✅ Complete |
 | Caddy reverse proxy (10 services, auto-HTTPS) | ✅ Complete |
 | Camera system (Frigate NVR, 4 cameras) | ✅ Complete |
 | Home Assistant (Frigate, Solar, MQTT) | ✅ Complete |
 | Frigate mobile notifications (HA blueprint) | ✅ Complete |
-| Psiphon Conduit fleet (6 nodes) | ✅ Operational |
+| Psiphon Conduit fleet (6 nodes, shirokhorshid) | ✅ Operational |
+| Tor Snowflake (all Conduit nodes) | ✅ Complete |
+| Watchtower auto-updates (all Conduit nodes) | ✅ Complete |
+| WireGuard fleet tunnels (metrics via tunnel) | ✅ Complete |
+| Freedom Fleet Grafana dashboard | ✅ Complete |
 | Ansible fleet management | 📋 Planned |
-| Tor Snowflake + Watchtower | 📋 Planned |
 | Wazuh SOC | 📋 Planned |
 | Ollama + Open WebUI (local AI) | 📋 Planned |
 | n8n workflow automation | 📋 Planned |

@@ -13,7 +13,7 @@ Replacing cloud dependencies with local-first infrastructure while contributing 
 
     ---
 
-    Stateful firewall with 6-VLAN segmentation, Suricata IPS (Hyperscan), CrowdSec, WireGuard VPN, and Quad9 DNS-over-TLS — running on a ZimaBoard 2.
+    Stateful firewall with 6-VLAN segmentation, Suricata IDS/IPS (Hyperscan), CrowdSec, WireGuard VPN, and Quad9 DNS-over-TLS — running on a ZimaBoard 2.
 
     [:octicons-arrow-right-24: Setup Guide](setup/opnsense.md)
 
@@ -81,7 +81,7 @@ Replacing cloud dependencies with local-first infrastructure while contributing 
 
 | Component | Hardware / Platform | Role |
 |---|---|---|
-| OPNsense | ZimaBoard 2 (N150, 16GB) | Firewall, VPN, DNS, IPS, CrowdSec |
+| OPNsense | ZimaBoard 2 (N150, 16GB) | Firewall, VPN, DNS, IDS/IPS, CrowdSec |
 | pve1 | HP EliteDesk G3 (i7-6700T, 32GB) | Proxmox compute node — Frigate NVR |
 | pve2 | HP EliteDesk G3 (i7-6700T, 32GB) | Proxmox compute node — Home Assistant |
 | pve3 | HP EliteDesk G3 (i7-7700, 32GB) | Proxmox compute node — Conduit homelab |
@@ -106,7 +106,7 @@ Replacing cloud dependencies with local-first infrastructure while contributing 
 | Expanded monitoring (Frigate/SNMP/Blackbox exporters) | :material-check-circle:{ .green } Complete |
 | Homepage dashboard | :material-check-circle:{ .green } Complete |
 | WireGuard VPN (multi-peer, household) | :material-check-circle:{ .green } Complete |
-| Suricata IPS (Hyperscan, LAN/igc0) | :material-check-circle:{ .green } Complete — tuning in Alert mode |
+| Suricata IDS/IPS (Hyperscan, LAN/igc0) | :material-check-circle:{ .green } Complete — tuning in Alert mode |
 | CrowdSec threat intelligence | :material-check-circle:{ .green } Complete |
 | DNS hardening (Quad9 DoT, DNSSEC, DNSBL) | :material-check-circle:{ .green } Complete |
 | Caddy reverse proxy (auto-HTTPS, DNS-01) | :material-check-circle:{ .green } Complete |
@@ -146,7 +146,7 @@ Internet ──► OPNsense (ZimaBoard 2)
 ## Key Principles
 
 - **FUTO-aligned:** Local control, no cloud dependency, open-source software
-- **Defense in depth:** VLAN isolation, Suricata IPS, CrowdSec, DNSBL, WireGuard encryption
+- **Defense in depth:** VLAN isolation, Suricata IDS/IPS, CrowdSec, DNSBL, WireGuard encryption
 - **Humanitarian purpose:** Dedicated proxy fleet serving users in censored regions
 - **Documentation-first:** Every build, every mistake, every lesson — documented publicly
 
