@@ -25,6 +25,8 @@ theme:
     - navigation.top
     - content.code.copy
     - search.highlight
+    - search.share
+    - toc.follow
   icon:
     repo: fontawesome/brands/github
 nav:
@@ -59,6 +61,8 @@ nav:
     - VLAN Migration: lessons-learned/vlan-migration.md
     - Parallel Network: lessons-learned/parallel-network.md
     - UniFi Adoption: lessons-learned/unifi-adoption.md
+    - Conduit OOM Kill Loops: lessons-learned/conduit-oom.md
+    - Frigate iGPU Conflict: lessons-learned/frigate-igpu.md
 markdown_extensions:
   - admonition
   - pymdownx.details
@@ -78,6 +82,9 @@ markdown_extensions:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - md_in_html
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
   - tables
   - toc:
       permalink: true
