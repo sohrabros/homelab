@@ -45,6 +45,7 @@ nav:
     - Frigate NVR: setup/frigate.md
     - Home Assistant: setup/home-assistant.md
     - Caddy Reverse Proxy: setup/caddy.md
+    - Wazuh SOC: setup/wazuh.md
   - Security:
     - Hardening: security/hardening.md
     - Firewall Rules: security/firewall-rules.md
@@ -63,6 +64,7 @@ nav:
     - UniFi Adoption: lessons-learned/unifi-adoption.md
     - Conduit OOM Kill Loops: lessons-learned/conduit-oom.md
     - Frigate iGPU Conflict: lessons-learned/frigate-igpu.md
+    - Ubuntu Server LVM: lessons-learned/ubuntu-lvm.md
 markdown_extensions:
   - admonition
   - pymdownx.details

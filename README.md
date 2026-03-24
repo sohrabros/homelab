@@ -50,6 +50,7 @@ graph TB
         FRIGATE["Frigate NVR<br/>4 Cameras · AI Detection"]
         HA["Home Assistant<br/>Solar · Cameras · MQTT"]
         CADDY["Caddy Reverse Proxy<br/>Auto-HTTPS · 10 Services"]
+        WAZUH["Wazuh SOC<br/>7 Agents · MITRE ATT&CK"]
     end
 
     ISP -->|"WAN"| FW
@@ -66,6 +67,7 @@ graph TB
     PVE1 -.-> MON
     PVE1 -.-> FRIGATE
     PVE2 -.-> HA
+    PVE2 -.-> WAZUH
     PVE2 -.-> CONDUIT
     PVE3 -.-> CADDY
 ```
@@ -118,6 +120,7 @@ The most valuable part of this repo. Real mistakes, real troubleshooting, real f
 - **[UniFi Adoption Across Subnets](docs/lessons-learned/unifi-adoption.md)** — When the controller and switches can't find each other
 - **[Conduit OOM Kill Loops](docs/lessons-learned/conduit-oom.md)** — When three Hetzner nodes entered an unrecoverable out-of-memory death spiral
 - **[Frigate iGPU Conflict](docs/lessons-learned/frigate-igpu.md)** — When VAAPI decode and OpenVINO detection fight over the same GPU
+- **[Ubuntu Server LVM](docs/lessons-learned/ubuntu-lvm.md)** — Why Ubuntu only gives you half your disk and how it broke a Wazuh install
 
 > *"The best time to start self-hosting was years ago. The second best time is now."*
 > — Louis Rossmann
@@ -127,7 +130,7 @@ The most valuable part of this repo. Real mistakes, real troubleshooting, real f
 Full documentation is hosted at **[sohrabros.github.io/homelab](https://sohrabros.github.io/homelab/)** and covers:
 
 - [Architecture & Network Design](docs/architecture/overview.md)
-- [Setup Guides](docs/setup/opnsense.md) (OPNsense, Proxmox, NAS, Switching, Monitoring, Caddy, Frigate, Home Assistant)
+- [Setup Guides](docs/setup/opnsense.md) (OPNsense, Proxmox, NAS, Switching, Monitoring, Caddy, Frigate, Home Assistant, Wazuh SOC)
 - [Security Hardening](docs/security/hardening.md) (Suricata IDS/IPS, CrowdSec, Firewall Rules, DNSBL)
 - [Humanitarian Tech](docs/humanitarian/psiphon-conduit.md) (Psiphon Conduit)
 - [Lessons Learned](docs/lessons-learned/index.md) (Real mistakes and fixes)
@@ -157,7 +160,7 @@ Full documentation is hosted at **[sohrabros.github.io/homelab](https://sohrabro
 | WireGuard fleet tunnels (metrics via tunnel) | ✅ Complete |
 | Freedom Fleet Grafana dashboard | ✅ Complete |
 | Ansible fleet management | 📋 Planned |
-| Wazuh SOC | 📋 Planned |
+| Wazuh SOC (7 agents, MITRE ATT&CK, active response) | ✅ Complete |
 | Ollama + Open WebUI (local AI) | 📋 Planned |
 | n8n workflow automation | 📋 Planned |
 | Immich (photo management) | 📋 Planned |

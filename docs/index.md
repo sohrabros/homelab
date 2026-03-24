@@ -73,6 +73,14 @@ Replacing cloud dependencies with local-first infrastructure while contributing 
 
     [:octicons-arrow-right-24: Setup Guide](setup/caddy.md)
 
+-   **:material-shield-alert: Wazuh SOC**
+
+    ---
+
+    Centralized security operations with Wazuh 4.14.4 — 7 agents monitoring every node, vulnerability scanning, MITRE ATT&CK mapping, Suricata IDS correlation, and automated active response pushing firewall blocks to OPNsense.
+
+    [:octicons-arrow-right-24: Setup Guide](setup/wazuh.md)
+
 </div>
 
 ---
@@ -89,6 +97,7 @@ Replacing cloud dependencies with local-first infrastructure while contributing 
 | Switches | USW-Lite-16-PoE, USW-Lite-8-PoE, Flex Mini 2.5G | VLAN-aware switching, SNMP monitored |
 | Wireless | 2× UniFi NanoHD | Dual-band WiFi, SNMP monitored |
 | Cameras | 3× Reolink RLC-510A + 1× PoE Doorbell | Frigate NVR with AI detection |
+| Wazuh SOC | VM 200 on pve2 (4 cores, 8GB RAM) | SIEM/XDR — 7 agents, vuln scanning, active response |
 | Conduit Fleet | 5× Hetzner CX23 (Helsinki) | Internet freedom proxy nodes |
 
 ---
@@ -120,7 +129,7 @@ Replacing cloud dependencies with local-first infrastructure while contributing 
 | Ansible fleet management | :material-clipboard-text-outline: Planned |
 | Conduit Fleet Intelligence Dashboard (humanitarian metrics) | :material-clipboard-text-outline: Planned |
 | Suricata: Alert → Drop mode | :material-clipboard-text-outline: Planned |
-| Wazuh SOC | :material-clipboard-text-outline: Planned — Phase 2 |
+| Wazuh SOC (7 agents, MITRE ATT&CK, active response) | :material-check-circle:{ .green } Complete |
 | Ollama + Open WebUI (local AI) | :material-clipboard-text-outline: Planned — Phase 3 |
 | n8n workflow automation | :material-clipboard-text-outline: Planned — Phase 4 |
 | Immich (photo management) | :material-clipboard-text-outline: Planned |

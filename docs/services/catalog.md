@@ -24,6 +24,7 @@
 | Watchtower | Automated Docker container updates — all Conduit nodes | :material-check-circle:{ .green } Production |
 | Frigate NVR | Camera recording + AI detection (4 cameras, OpenVINO) | :material-check-circle:{ .green } Production |
 | Home Assistant | Smart home — Frigate, solar monitoring, MQTT, notifications | :material-check-circle:{ .green } Production |
+| Wazuh | Security operations centre — SIEM/XDR, 7 agents, vulnerability scanning, MITRE ATT&CK, active response | :material-check-circle:{ .green } Production |
 
 ## Planned Services
 
@@ -31,7 +32,6 @@ These follow the established [Docker Host LXC pattern](setup/docker-services.md)
 
 | Service | Purpose | FUTO Alignment |
 |---|---|---|
-| Wazuh | Security operations centre (SOC) | Centralised security monitoring |
 | Ollama + Open WebUI | Local AI inference | Replaces cloud AI dependencies |
 | n8n | Workflow automation | Connects HA, Frigate, Wazuh, Ollama |
 | Jellyfin | Media streaming server | Replaces Netflix/Plex cloud |
