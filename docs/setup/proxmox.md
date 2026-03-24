@@ -1,5 +1,7 @@
 # Proxmox Setup
 
+![Proxmox Cluster — 3 nodes online, quorum established](../assets/screenshots/proxmox-cluster.png)
+
 ## Hardware
 
 ### Nodes 1 & 2 — HP EliteDesk 800 G3 Mini

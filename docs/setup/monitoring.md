@@ -1,5 +1,7 @@
 # Monitoring Setup
 
+![Grafana Command Center — infrastructure health at a glance](../assets/screenshots/grafana-command-center.png)
+
 ## Stack
 
 | Tool | Purpose |

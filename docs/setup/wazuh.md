@@ -2,6 +2,8 @@
 
 Centralized security monitoring with Wazuh 4.14.4 — vulnerability scanning, intrusion detection, file integrity monitoring, CIS compliance benchmarks, and MITRE ATT&CK mapping across the entire GoozLab infrastructure.
 
+![Wazuh Overview — 7 agents active, 24-hour alert summary](../assets/screenshots/wazuh-overview.png)
+
 ---
 
 ## Architecture
@@ -118,12 +120,16 @@ This triggers on rule 87702 (multiple firewall blocks from the same source) and 
 
 ## Capabilities
 
+![Vulnerability Detection — CVE scanning across the fleet](../assets/screenshots/wazuh-vulnerabilities.png)
+
 - **Vulnerability Detection** — Automated CVE scanning across all agents
 - **File Integrity Monitoring (FIM)** — Tracks changes to critical system files
 - **Security Configuration Assessment (SCA)** — CIS benchmarks for Debian 12/13 and Ubuntu 24.04
 - **Suricata Integration** — IDS/IPS alerts from OPNsense eve.json correlated with MITRE ATT&CK
 - **Active Response** — Automated firewall blocks pushed back to OPNsense
 - **MITRE ATT&CK Mapping** — All alerts mapped to adversary tactics and techniques
+
+![MITRE ATT&CK — alerts evolution, tactics and techniques by agent](../assets/screenshots/wazuh-mitre-attack.png)
 - **Rootcheck** — Host-based anomaly detection
 - **Log Analysis** — Centralized log collection from all infrastructure nodes
 

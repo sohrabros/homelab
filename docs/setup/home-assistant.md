@@ -1,5 +1,7 @@
 # Home Assistant
 
+![Home Assistant — camera feeds, solar monitoring, weather](../assets/screenshots/home-assistant-dashboard.png)
+
 Home Assistant OS runs as a virtual machine on pve2, providing a unified dashboard for security cameras, solar monitoring, and home automation — all self-hosted with no cloud dependencies.
 
 ## Architecture

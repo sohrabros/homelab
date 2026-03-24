@@ -1,5 +1,9 @@
 # OPNsense Setup
 
+![OPNsense Lobby Dashboard — system info, WireGuard peers, traffic graphs](../assets/screenshots/opnsense-dashboard.png)
+
+![OPNsense Interface Assignments — 7 VLANs + WAN](../assets/screenshots/opnsense-interfaces.png)
+
 ## Hardware
 
 | Component | Specification |

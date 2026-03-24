@@ -1,5 +1,7 @@
 # Psiphon Conduit — Internet Freedom
 
+![Grafana Freedom Fleet — humanitarian impact metrics](../assets/screenshots/grafana-freedom-fleet.png)
+
 ## What Is This?
 
 A significant part of GoozLab's infrastructure is dedicated to running **[Psiphon Conduit](https://conduit.psiphon.ca/)** — a volunteer proxy service that helps people in censored countries access the open internet.

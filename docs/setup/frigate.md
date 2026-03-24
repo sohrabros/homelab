@@ -1,5 +1,7 @@
 # Frigate NVR Setup
 
+![Frigate — 4 camera live view with AI detection](../assets/screenshots/frigate-live-view.png)
+
 Frigate is a self-hosted NVR running inside a Docker container on a privileged Proxmox LXC, providing real-time AI object detection, recording, and snapshot capture for all four PoE cameras — completely local with no cloud dependencies.
 
 ## Why Frigate?

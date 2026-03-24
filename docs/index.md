@@ -1,7 +1,9 @@
 # GoozLab — Privacy-First Home Infrastructure
 
-*Self-hosted homelab built on open-source software and [FUTO principles](https://wiki.futo.org/index.php/Introduction_to_a_Self_Managed_Life:_a_13_hour_%26_28_minute_presentation_by_FUTO_software).  
+*Self-hosted homelab built on open-source software and [FUTO principles](https://wiki.futo.org/index.php/Introduction_to_a_Self_Managed_Life:_a_13_hour_%26_28_minute_presentation_by_FUTO_software).
 Replacing cloud dependencies with local-first infrastructure while contributing to global internet freedom.*
+
+![Homepage Dashboard — GoozLab service overview](assets/screenshots/homepage-dashboard.png)
 
 ---
 
